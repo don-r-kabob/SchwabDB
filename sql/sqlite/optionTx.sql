@@ -1,0 +1,20 @@
+CREATE TABLE IF NOT EXISTS optionTx (
+    transactionId BIGINT NOT NULL,
+    orderId BIGINT,
+    assetType TEXT NOT NULL,
+    optionSymbol TEXT,
+    description TEXT,
+    putCall TEXT,
+    strikePrice REAL,
+    optionType TEXT,
+    underlyingSymbol TEXT,
+    quantity REAL,
+    cost REAL,
+    price REAL,
+    positionEffect TEXT,
+    expirationDate TEXT,
+    expiration REAL,
+    deliverableType TEXT,
+        optionPremiumMultiplier REAL,
+    PRIMARY KEY (transactionId, optionSymbol)
+);

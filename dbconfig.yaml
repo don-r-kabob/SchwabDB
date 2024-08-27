@@ -1,0 +1,9 @@
+engine: sqlite
+path: schwab_tx.db
+refresh: #in seconds
+  accountinfo: 60
+  transactions: 1800
+  sleep: 30
+save_json: true
+save_json_path: txjson
+loglevel: warning
