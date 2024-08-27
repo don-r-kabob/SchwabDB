@@ -4,9 +4,11 @@ import seaborn as sns
 
 import schwab_db
 import streamlit_interface as si
+
+import streamlit_utils
 from dbaccess import get_nlv
 
-dbconfig = si.read_dbconfig("dbconfig.yaml")
+dbconfig = streamlit_utils.read_dbconfig("dbconfig.yaml")
 engine = schwab_db.get_engine(dbconfig=dbconfig)
 
 def main(dbconfig: dict, **kwargs):
