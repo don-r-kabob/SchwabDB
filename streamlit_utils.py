@@ -89,3 +89,10 @@ def get_schwab_client(conf: Config = None):
         st.json(c.__dict__)
         raise Exception("Client is still none")
     return client
+
+
+@st.cache_data
+def read_dbconfig(dbconfig_file):
+    with open(dbconfig_file, 'r') as fh:
+        dbconfig = yaml.safe_load(fh)
+    return dbconfig

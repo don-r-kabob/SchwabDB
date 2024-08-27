@@ -5,10 +5,9 @@ import dbaccess
 import dbutils
 import streamlit_utils
 from datastructures import read_dashconfig_file
-import streamlit_interface as si
 
 dashconfig = read_dashconfig_file("dashboard_config.yaml")
-dbconfig = si.read_dbconfig("dbconfig.yaml")
+dbconfig = streamlit_utils.read_dbconfig("dbconfig.yaml")
 
 def get_contact_totals(df: pd.DataFrame):
     sum_df = df.groupby(['contract'])['cost'].sum()

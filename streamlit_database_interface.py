@@ -1,26 +1,16 @@
 import argparse
 
 import streamlit as st
-import pandas as pd
 
 import dbutils
 #import queries
-import yaml
 
 import streamlit_utils
 from datastructures import read_dashconfig_file
+from streamlit_utils import read_dbconfig
 
 dashconfig = read_dashconfig_file("dashboard_config.yaml")
 st.set_page_config(layout=dashconfig['streamlit']['pagelayout'])
-
-
-@st.cache_data
-def read_dbconfig(dbconfig_file):
-    with open(dbconfig_file, 'r') as fh:
-        dbconfig = yaml.safe_load(fh)
-    return dbconfig
-
-
 
 
 def main(appconfig_file=None, dbconfig_file=None, **kwargs):

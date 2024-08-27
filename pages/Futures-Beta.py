@@ -15,7 +15,7 @@ from datastructures import read_dashconfig_file
 from dbaccess import get_equity_option_transactions
 
 dashconfig = read_dashconfig_file("dashboard_config.yaml")
-dbconfig = si.read_dbconfig("dbconfig.yaml")
+dbconfig = streamlit_utils.read_dbconfig("dbconfig.yaml")
 #st.set_page_config(layout=dashconfig['streamlit']['pagelayout'])
 
 def main(
