@@ -77,17 +77,20 @@ def main(
         **kwargs
 ):
     schwab_config_file = appconfig.get('schwab', {}).get('configfile')
-    conf: Config
+    schwab_token_file = appconfig.get('schwab', {}).get('tokenfile')
+    conf: Config = Config()
     if noauth is True:
-        conf = Config()
         conf.read_config(schwab_config_file)
         __write_to_amazon(appconfig=appconfig, conf=conf)
         return
     if (schwab_config_file and os.path.exists(schwab_config_file) and (setup is False)):
-        conf = Config()
         conf.read_config(schwab_config_file)
     elif noauth is False:
-        conf = setup_schwab_config()
+        setup_schwab_config(
+            conf=conf,
+            tokenpath=schwab_token_file,
+            cfile=schwab_config_file
+        )
 
     client = setup_client(conf=conf)
 

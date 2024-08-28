@@ -165,3 +165,4 @@ cython_debug/
 /dashboard_config.yaml
 /schwab_tx.db
 /txjson/
+*.bak
