@@ -59,7 +59,7 @@ A schwab app with a port number from schwab developer portal.
 
 3. Run interface to view if desired
 
-    ```streamlit run streamlit_interface.py```
+    ```streamlit run streamlit_database_interface.py```
 
 # Getting authtoken
 
