@@ -68,10 +68,10 @@ def fetch_and_store_transactions(
 
     while current_date < end_date:
         next_date = current_date + timedelta(days=1)
-        logging.info(f"Fetching {next_date.date()}")
+        logging.debug(f"Fetching {next_date.date()}")
 
         for account in accounts.accounts:
-            logging.info(f"\tFetching account {account.accountNumber}")
+            logging.debug(f"\tFetching account {account.accountNumber}")
             try:
                 transactions = client.get_transactions(
                     account_hash=account.hashValue,
@@ -221,7 +221,7 @@ def fetch_and_store_account_info(client, dbconfig):
         curr_nlv = cb['liquidationValue']
         initial_bp = ib.get('buyingPower', 0.0)
         current_bp = cb.get('buyingPower', 0.0)
-        print(ts)
+        logging.debug("Current timestamp:" + str(ts))
 
         data.append(
             {
