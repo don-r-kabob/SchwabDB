@@ -27,6 +27,8 @@ A schwab app with a port number from schwab developer portal.
     - Ability to visiaulize data
     - Control plots by data range and filter tickers
     - Ability to remove account numbers and axis values for more discrete sharing
+    - Invert x/y axis (may not always work as intended)
+    - Change figure size (streamlit limitation currently doesn't create good visibility)
 2. NLV and buying power Tracking
 2. Ability to store/read token using AWS dynamodb
 
