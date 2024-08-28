@@ -71,8 +71,14 @@ A schwab app with a port number from schwab developer portal.
 4. Optional
    - Default account number (in string format)
 
+Script will walk you through this
+
 1. Setup app config
-2. 
+    ```python get_refresh_token.py```
+    
+    enter above info when prompted
+2. click link and log into schwab
+3. Copy redirect link and paste into program
 
 ### Known issues
 
