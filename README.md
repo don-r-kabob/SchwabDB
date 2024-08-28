@@ -23,9 +23,13 @@ A schwab app with a port number from schwab developer portal.
      - Futures
      - Equity options
      - Futures options
+3. streamlit interface to visualize data with nifty plots
+    - Ability to visiaulize data
+    - Control plots by data range and filter tickers
+    - Ability to remove account numbers and axis values for more discrete sharing
 2. NLV and buying power Tracking
 2. Ability to store/read token using AWS dynamodb
-3. streamlit interface
+
 4. option to save transaction json files for:
    - record keeping
    - reparsing later with database updates
