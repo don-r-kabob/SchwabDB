@@ -180,8 +180,6 @@ def get_futures_tx(_engine: sqlalchemy.Engine=None):
     if not _engine:
         raise Exception()
     return __get_futures_transactions(_engine)
-    #df = pd.read_sql_query(q, _engine)
-    #return df
 
 @st.cache_data(ttl=1)
 def __get_futures_transactions(
