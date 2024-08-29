@@ -6,17 +6,14 @@ import streamlit as st
 
 import dbaccess
 import dbutils
-import streamlit_interface as si
 import seaborn as sns
 import matplotlib.pyplot as plt
 
 import streamlit_utils
 from datastructures import read_dashconfig_file
-from dbaccess import get_equity_option_transactions
 
 dashconfig = read_dashconfig_file("dashboard_config.yaml")
 dbconfig = streamlit_utils.read_dbconfig("dbconfig.yaml")
-#st.set_page_config(layout=dashconfig['streamlit']['pagelayout'])
 
 def main(
         dbconfig=None,
@@ -38,11 +35,8 @@ def main(
 
 
     data_controls = st.expander("Data Controls", expanded=True)
-    #data_controls = st.expander("Data Controls")
-    #plot_container = st.expander("Data", expanded=True)
     plot_container = st.container()
     table_container = st.container()
-    #plot_controls = st.expander("Plot controls")
     plot_controls = st.container()
     with plot_controls:
         plot_controls1, plot_controls2, plot_controls3 = st.columns(3)
@@ -101,8 +95,6 @@ def main(
             value=[
                 default_start,
                 default_end
-                #,datetime.now().replace(year=2024, month=1, day=1).date(),
-                #,datetime.now().date()
             ],
             #min_value=datetime.now().replace(year=2023, month=1, day=1).date(),
             min_value=min_date,
@@ -114,9 +106,6 @@ def main(
     with st.spinner("Getting db transactions"):
         df = dbaccess.get_futures_tx(
             _engine=engine
-            #,exp_start_dt=start_dt,
-            #exp_end_dt=end_dt,
-            #accounts=None
         )
         tickers = df['symbol'].unique()
     with data_controls:

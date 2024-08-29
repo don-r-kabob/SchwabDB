@@ -6,17 +6,14 @@ import streamlit as st
 
 import dbaccess
 import dbutils
-import streamlit_interface as si
 import seaborn as sns
 import matplotlib.pyplot as plt
 
 import streamlit_utils
 from datastructures import read_dashconfig_file
-from dbaccess import get_equity_option_transactions
 
 dashconfig = read_dashconfig_file("dashboard_config.yaml")
 dbconfig = streamlit_utils.read_dbconfig("dbconfig.yaml")
-#st.set_page_config(layout=dashconfig['streamlit']['pagelayout'])
 
 def main(
         dbconfig=None,

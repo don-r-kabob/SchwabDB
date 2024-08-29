@@ -43,7 +43,7 @@ def main(
     SHOW_XAXIS = True
     SHOW_YAXIS = True
     INVERT_XY = False
-    DISPLAY_METHOD = "plot"
+    DISPLAY_METHOD = "table"
 
 
     with data_controls:
@@ -91,7 +91,7 @@ def main(
 
 
     with data_controls:
-        DISPLAY_METHOD = st.selectbox("display", options=["plot", "table"])
+        DISPLAY_METHOD = st.selectbox("display", options=["plot", "table"], index=1)
         remove_tickers_list = st.multiselect("Remove Tickers", options=tickers)
 
     fig: plt.Figure
