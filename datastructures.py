@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import json
+import logging
 import os
 import shutil
 
@@ -19,7 +20,7 @@ class Config(object):
         self.defaultAccount = None
 
     def read_config(self, config_file):
-        #print("Reading config")
+        logging.debug("Reading schwab application config")
         fh = open(config_file, 'r')
         c = json.load(fh)
         fh.close()
