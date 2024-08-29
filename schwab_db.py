@@ -13,7 +13,7 @@ import datastructures
 import schwab_utils
 from datastructures import Config
 from account import AccountList
-from dbutils import get_engine, bulk_insert_to_db, upsert_to_db, get_latest_date, print_top_entries
+from dbutils import get_engine, bulk_insert_to_db, upsert_to_db, get_latest_date
 from transactions import extract_base_transaction_values, extract_additional_transaction_values, process_transaction
 
 APP_DESCRIPTION = """
@@ -194,15 +194,11 @@ def fetch_and_store_transactions_working(client, accounts: AccountList, engine, 
                 for table_name, data_list in additional_data.items():
                     if data_list:
                         flat_additional_transactions = pd.DataFrame(data_list)
-                        upsert_to_db(flat_additional_transactions, table_name, engine, dbconfig, primary_keys_dict)
+                        upsert_to_db(flat_additional_transactions, table_name, engine, dbconfig)
 
             except Exception as e:
                 print(f"Error fetching transactions for {account.accountNumber}: {e}")
             current_date = next_date
-
-
-
-
 
 
 def fetch_and_store_account_info(client, dbconfig):
@@ -235,7 +231,6 @@ def fetch_and_store_account_info(client, dbconfig):
             }
         )
     df = pd.DataFrame(data)
-    #print(df)
     engine = get_engine(dbconfig)
     bulk_insert_to_db(df, "nlv", engine, dbconfig, ignore=False)
 
@@ -265,10 +260,6 @@ def main(appconfig, dbconfig, daysback, **kwargs):
             fetch_and_store_transactions(client, accounts, engine, dbconfig, daysback)
             next_tx_update = (datetime.fromtimestamp(next_tx_update)+timedelta(seconds=dbconfig['refresh']['transactions'])).timestamp()
             logging.info(f"Finished transaction update - next {next_nlv_update}")
-        #print(f"{datetime.now()} - Updating database")
-        #fetch_and_store_transactions(client, accounts, engine, dbconfig, daysback)
-        #print(f"{datetime.now()} - finished update")
-        #daysback = None
         time.sleep(dbconfig['refresh']['sleep'])
 
 if __name__ == "__main__":
