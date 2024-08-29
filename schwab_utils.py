@@ -35,7 +35,7 @@ def get_schwab_client(schwab_config: Config=None, appconfig: dict=None) -> schwa
                 amazon.write_token_from_dynamodb(appconfig)
                 client = __setup_client(config=schwab_config)
                 account_numbers = client.get_account_numbers().json()
-                #print(json.dumps(account_numbers, indent=4))
+                logging.debug(json.dumps(account_numbers, indent=4))
                 return client
             else:
                 logging.error("Token not found in config.")

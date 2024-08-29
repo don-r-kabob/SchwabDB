@@ -69,7 +69,6 @@ def get_schwab_client(conf: Config = None):
         else:
             raise Exception("Unable to create client")
     if c is not None:
-        #sys.stderr.write(json.dumps(c.__dict__, indent=4))
         try:
             client = schwab.auth.client_from_token_file(
                 conf.tokenpath,

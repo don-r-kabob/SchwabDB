@@ -38,14 +38,6 @@ from datetime import datetime
 from dateutil import parser
 import json
 
-from datetime import datetime
-from dateutil import parser
-import json
-
-from datetime import datetime
-from dateutil import parser
-import json
-
 
 def extract_additional_transaction_values_orig(transaction):
     additional_data = {
