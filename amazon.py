@@ -41,13 +41,10 @@ def write_token_from_dynamodb(config: dict):
 
     try:
         response = table.get_item(Key={primary_key: 'authtoken'})['Item']
-        # Check if 'Item' is present in the response
         if 'token' in response:
             token_file = config.get("schwab").get("tokenfile")
             token_data = response['token']
             __dynamo_decimal_to_int(token_data)
-            #ts: boto3.dynamodb.types.Decimal = token_data['creation_timestamp']
-            #token_data['creation_timestamp'] = float(ts)
             with open(token_file, 'w') as fh:
                 json.dump(token_data, fh)
             return token_file
