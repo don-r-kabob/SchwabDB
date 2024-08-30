@@ -42,7 +42,21 @@ def get_schwab_client(config: Config, useasync=False) -> schwab.client.Client:
     return client
 
 
-import traceback
+def get_log_level(log_level_str):
+    # Mapping of string log level names to logging module constants
+    LOG_LEVELS = {
+        'DEBUG': logging.DEBUG,
+        'INFO': logging.INFO,
+        'WARNING': logging.WARNING,
+        'ERROR': logging.ERROR,
+        'CRITICAL': logging.CRITICAL
+    }
+
+    # Convert the string to uppercase to ensure case-insensitivity
+    log_level_str = log_level_str.upper()
+
+    # Return the corresponding log level constant, or default to INFO if not found
+    return LOG_LEVELS.get(log_level_str, logging.INFO)
 
 
 def fetch_and_store_transactions(
@@ -234,12 +248,11 @@ def fetch_and_store_account_info(client, dbconfig):
     engine = get_engine(dbconfig)
     bulk_insert_to_db(df, "nlv", engine, dbconfig, ignore=False)
 
-def main(appconfig, dbconfig, daysback, **kwargs):
+def main(appconfig, dbconfig, daysback, dashconfig, **kwargs):
     schwab_conf = Config()
     schwab_conf.read_config(appconfig)
     dbconfig = load_config(dbconfig)
-    dash_config = datastructures.read_dashconfig_file(kwargs['dashconfig']  )
-    client = schwab_utils.get_schwab_client(schwab_config=schwab_conf, appconfig=dash_config)
+    client = schwab_utils.get_schwab_client(schwab_config=schwab_conf, appconfig=dashconfig)
     acc_json = client.get_account_numbers().json()
     accounts = AccountList(jdata=acc_json)
 
@@ -254,12 +267,12 @@ def main(appconfig, dbconfig, daysback, **kwargs):
             logging.info("Updating account info")
             fetch_and_store_account_info(client, dbconfig)
             next_nlv_update = (datetime.fromtimestamp(next_nlv_update)+timedelta(seconds=dbconfig['refresh']['accountinfo'])).timestamp()
-            logging.info(f"Finished account info - next {next_nlv_update}")
+            logging.info(f"Finished account info - next at: {next_nlv_update}")
         if nowts > next_tx_update:
             logging.info("Updating transactions")
             fetch_and_store_transactions(client, accounts, engine, dbconfig, daysback)
             next_tx_update = (datetime.fromtimestamp(next_tx_update)+timedelta(seconds=dbconfig['refresh']['transactions'])).timestamp()
-            logging.info(f"Finished transaction update - next {next_nlv_update}")
+            logging.info(f"Finished transaction update - next at: {next_nlv_update}")
         time.sleep(dbconfig['refresh']['sleep'])
 
 if __name__ == "__main__":
@@ -297,4 +310,11 @@ if __name__ == "__main__":
 
     )
     args = parser.parse_args()
+    setattr(args, 'dashconfig', datastructures.read_dashconfig_file(args.dashconfig))
+    log_level = get_log_level(args.dashconfig.get('app').get('logging', "info"))
+    logging.basicConfig(
+        level=log_level,  # Set the logging level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
+        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',  # Define the format of the log messages
+        datefmt='%Y-%m-%d %H:%M:%S',  # Set the date format
+    )
     main(**vars(args))
