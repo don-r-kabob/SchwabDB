@@ -3,7 +3,6 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 import schwab_db
-import streamlit_interface as si
 
 import streamlit_utils
 from dbaccess import get_nlv
