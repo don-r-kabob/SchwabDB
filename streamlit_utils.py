@@ -20,14 +20,14 @@ def sidebar_reset_cache_button():
         )
 
 
-@st.cache_data
+@st.cache_data(ttl=60)
 def get_cache_config(config_file):
     c = Config()
     c.read_config(config_file)
     return c
 
 
-@st.cache_data
+@st.cache_data(ttl=60)
 def get_cache_appconfig(appconfig_file):
     with open(appconfig_file, 'r') as ac_fh:
         APP_CONFIG = yaml.safe_load(ac_fh)
@@ -90,7 +90,7 @@ def get_schwab_client(conf: Config = None):
     return client
 
 
-@st.cache_data
+@st.cache_data(ttl=60)
 def read_dbconfig(dbconfig_file):
     with open(dbconfig_file, 'r') as fh:
         dbconfig = yaml.safe_load(fh)

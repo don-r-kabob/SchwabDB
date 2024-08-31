@@ -56,7 +56,7 @@ def get_equity_option_transactions(
     return df
 
 
-@st.cache_data(ttl=1)
+@st.cache_data(ttl=60)
 def __get_options_transactions(
         _engine = None,
 ) -> pd.DataFrame:
@@ -84,7 +84,7 @@ def __get_options_transactions(
     return df
 
 
-@st.cache_data
+@st.cache_data(ttl=60)
 def get_option_types(
         _engine: sqlalchemy.Engine = None
 ):
@@ -96,14 +96,14 @@ def get_option_types(
     df = pd.read_sql_query(q, _engine)
     return list(df['deliverableType'])
 
-@st.cache_data
+@st.cache_data(ttl=60)
 def get_min_option_expiration_timestamp(_engine=None):
     q = "SELECT min(expiration) as expiration FROM optionTx"
     df = pd.read_sql_query(q, _engine)
     return df['expiration'].values[0]
 
 
-@st.cache_data
+@st.cache_data(ttl=60)
 def get_max_option_expiration_timestamp(_engine=None):
     q = "SELECT max(expiration) as expiration FROM optionTx"
     df = pd.read_sql_query(q, _engine)
@@ -117,14 +117,14 @@ def get_account_numbers(_engine: sqlalchemy.Engine = None):
     q = "SELECT distinct accountNumber from transactions"
     df = pd.read_sql_query(q, _engine)
     return list(df['accountNumber'])
-@st.cache_data
+@st.cache_data(ttl=60)
 def get_min_option_transaction_timestamp(_engine=None):
     q = "SELECT min(tradeDate) as expiration FROM transactions"
     df = pd.read_sql_query(q, _engine)
     return df['expiration'].values[0]
 
 
-@st.cache_data
+@st.cache_data(ttl=60)
 def get_max_option_transaction_timestamp(_engine=None):
     q = "SELECT max(tradeDate) as expiration FROM transactions"
     df = pd.read_sql_query(q, _engine)
@@ -181,7 +181,7 @@ def get_futures_tx(_engine: sqlalchemy.Engine=None):
         raise Exception()
     return __get_futures_transactions(_engine)
 
-@st.cache_data(ttl=1)
+@st.cache_data(ttl=10)
 def __get_futures_transactions(
         _engine = None,
 ) -> pd.DataFrame:
