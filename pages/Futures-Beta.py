@@ -1,3 +1,4 @@
+import logging
 import sys
 from datetime import datetime
 
@@ -211,7 +212,7 @@ def main(
             st.dataframe(tx_gb)
             st.dataframe(df)
 
-    print("Finishing")
+    logging.debug("Finishing")
     return 0
 
 main(dbconfig=dbconfig)
