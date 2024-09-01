@@ -1,6 +1,6 @@
 # Schwab_db
 
-An application which creates and updates a database
+An application which creates and updates a database (default is sqlite, however other SQL dbs should be easily accommodated)
 for storing transactions and NLV using schwab individual API
 
 
@@ -13,6 +13,7 @@ Requirements:
 - Seaborn
 
 A schwab app with a port number from schwab developer portal.
+
 
 # Features
 
