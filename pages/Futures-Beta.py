@@ -180,7 +180,7 @@ def main(
                     #dtniso = dtn.isocalendar()[0:2]
 
                     now_year_week = "-".join(str(x).zfill(2) for x in dtn.isocalendar()[0:2])
-                    print(now_year_week)
+                    logging.debug(now_year_week)
                     tl: plt.Text
                     for tl in ticklabels:
                         pass
