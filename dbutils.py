@@ -1,3 +1,5 @@
+import logging
+
 import pandas as pd
 from sqlalchemy import create_engine, inspect, text, Table, MetaData
 from sqlalchemy.dialects.sqlite import insert as sqlite_insert
@@ -15,8 +17,22 @@ def get_engine(dbconfig):
 
     return engine
 
+from pathlib import Path
+import os
+
+def ensure_dir_and_create_file_path(directory, filename):
+    # Ensure the directory exists; if not, create it
+    Path(directory).mkdir(parents=True, exist_ok=True)
+
+    # Create the full file path
+    file_path = os.path.join(directory, filename)
+
+    return file_path
 def create_table_from_sql(engine, table_name, dbconfig):
-    sql_file_path = f'sql/{dbconfig["engine"]}/{table_name}.sql'
+    sql_file_name = f'{table_name}.sql'
+    #sql_file_path = f'sql/{dbconfig["engine"]}/{table_name}.sql'
+    sql_file_path = os.path.join("sql", dbconfig['engine'], sql_file_name)
+    logging.info(f"Creating table {table_name} in {sql_file_path}")
     with engine.connect() as conn:
         with open(sql_file_path, 'r') as file:
             conn.execute(text(file.read()))
@@ -56,6 +72,7 @@ def upsert_to_db(df, table_name, engine, dbconfig):
     try:
         inspector = inspect(engine)
         if not inspector.has_table(table_name):
+            logging.info(f"Creating table {table_name}")
             create_table_from_sql(engine, table_name, dbconfig)
 
         metadata = MetaData()
