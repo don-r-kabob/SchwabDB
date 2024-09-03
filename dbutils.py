@@ -32,7 +32,7 @@ def create_table_from_sql(engine, table_name, dbconfig):
     sql_file_name = f'{table_name}.sql'
     #sql_file_path = f'sql/{dbconfig["engine"]}/{table_name}.sql'
     sql_file_path = os.path.join("sql", dbconfig['engine'], sql_file_name)
-    logging.info(f"Creating table {table_name} in {sql_file_path}")
+    logging.info(f"Creating table {table_name} from {sql_file_path}")
     with engine.connect() as conn:
         with open(sql_file_path, 'r') as file:
             conn.execute(text(file.read()))
