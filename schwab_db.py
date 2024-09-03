@@ -42,6 +42,18 @@ def get_schwab_client(config: Config, useasync=False) -> schwab.client.Client:
     return client
 
 
+from pathlib import Path
+
+
+def ensure_dir_and_create_file_path(directory, filename):
+    # Ensure the directory exists; if not, create it
+    Path(directory).mkdir(parents=True, exist_ok=True)
+
+    # Create the full file path
+    file_path = os.path.join(directory, filename)
+
+    return file_path
+
 def get_log_level(log_level_str):
     # Mapping of string log level names to logging module constants
     LOG_LEVELS = {
@@ -92,9 +104,12 @@ def fetch_and_store_transactions(
                     start_date=current_date,
                     end_date=next_date
                 ).json()
+                #logging.info(json.dumps(transactions, indent=4))
 
                 if save_json:
-                    file_name = f"{save_json_path}/transactions.{account.accountNumber}.{current_date.strftime('%y%m%d')}.json"
+                    tx_file_name = f"transactions.{account.accountNumber}.{current_date.strftime('%y%m%d')}.json"
+                    file_name = ensure_dir_and_create_file_path(save_json_path, tx_file_name)
+                    #file_name = f"{save_json_path}/transactions.{account.accountNumber}.{current_date.strftime('%y%m%d')}.json"
                     with open(file_name, 'w') as file:
                         json.dump(transactions, file, indent=4)
 
@@ -107,6 +122,10 @@ def fetch_and_store_transactions(
                                 df = pd.DataFrame(data_list)
                                 if table_name == 'transactions':
                                     #bulk_insert_to_db(df, "transactions", engine, dbconfig)
+                                    upsert_to_db(df, table_name, engine, dbconfig)
+                                elif "optionTx":
+                                    upsert_to_db(df, table_name, engine, dbconfig)
+                                elif "futureTx":
                                     upsert_to_db(df, table_name, engine, dbconfig)
                                 else:
                                     upsert_to_db(df, table_name, engine, dbconfig)
@@ -216,7 +235,7 @@ def fetch_and_store_transactions_working(client, accounts: AccountList, engine, 
 
 
 def fetch_and_store_account_info(client, dbconfig):
-    logging.debug("Fetching and storing account Info")
+    logging.info("Fetching and storing account Info")
     data = []
     resj = client.get_accounts().json()
     ts = datetime.now().timestamp()
